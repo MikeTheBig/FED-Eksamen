@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
-import axios from "axios";
-import InputField from "./InputField";  // Juster stien hvis nødvendig
-import { Button } from "./Button";      // Juster stien hvis nødvendig
+import InputField from "../Component/InputField";
+import Button from "../Component/Button";
+import { fetchExams, fetchStudentsByExam, updateStudent } from "../api";
 
 export default function StartExam() {
   const [exams, setExams] = useState([]);
@@ -18,10 +18,12 @@ export default function StartExam() {
   const timerRef = useRef(null);
 
   useEffect(() => {
-    axios.get("http://localhost:3001/exams").then((res) => {
-      setExams(res.data);
-      if (res.data.length > 0) setSelectedExamId(res.data[0].id);
-    });
+    fetchExams()
+      .then((data) => {
+        setExams(data);
+        if (data.length > 0) setSelectedExamId(data[0].id);
+      })
+      .catch((err) => alert("Fejl ved hentning af eksamener: " + err.message));
   }, []);
 
   useEffect(() => {
@@ -44,10 +46,12 @@ export default function StartExam() {
       setExamStarted(false);
       return;
     }
-    axios.get(`http://localhost:3001/students?examId=${selectedExamId}`).then((res) => {
-      setStudents(res.data);
-      setCurrentStudentIndex(0);
-    });
+    fetchStudentsByExam(selectedExamId)
+      .then((data) => {
+        setStudents(data);
+        setCurrentStudentIndex(0);
+      })
+      .catch((err) => alert("Fejl ved hentning af studerende: " + err.message));
   }, [selectedExamId]);
 
   function handleDrawQuestion() {
@@ -110,7 +114,7 @@ export default function StartExam() {
     };
 
     try {
-      await axios.patch(`http://localhost:3001/students/${currentStudent.id}`, updatedData);
+      await updateStudent(currentStudent.id, updatedData);
       alert("Data gemt!");
     } catch (error) {
       alert("Fejl ved gemning: " + error.message);
@@ -127,7 +131,7 @@ export default function StartExam() {
       setCurrentStudentIndex((prev) => prev + 1);
     } else {
       alert("Eksamen er færdig!");
-      setStudents([]); // Tøm listen for UI
+      setStudents([]);
     }
   }
 

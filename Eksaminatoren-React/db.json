@@ -17,6 +17,33 @@
       "questionCount": 4,
       "examDurationMinutes": 15,
       "startTime": "11:42"
+    },
+    {
+      "id": "09d5",
+      "term": "Sommer 25",
+      "course": "CS2 Turnering",
+      "date": "2025-06-19",
+      "questionCount": 4,
+      "examDurationMinutes": 45,
+      "startTime": "03:40"
+    },
+    {
+      "id": "f74a",
+      "term": "Sommer 26",
+      "course": "LOL Turnering",
+      "date": "2025-06-20",
+      "questionCount": 5,
+      "examDurationMinutes": 35,
+      "startTime": "04:45"
+    },
+    {
+      "id": "345a",
+      "term": "SOmmer 27",
+      "course": "LOL 1234",
+      "date": "2025-06-20",
+      "questionCount": 13,
+      "examDurationMinutes": 45,
+      "startTime": "04:48"
     }
   ],
   "students": [
@@ -51,6 +78,34 @@
       "actualExamTime": 1,
       "notes": "ewfwe",
       "grade": "10"
+    },
+    {
+      "id": "70d3",
+      "examId": "1",
+      "studentNumber": "2211033",
+      "name": "Jesper Peter"
+    },
+    {
+      "id": "6daf",
+      "examId": "09d5",
+      "studentNumber": "32134",
+      "name": "fwefwe"
+    },
+    {
+      "id": "47f2",
+      "examId": "f74a",
+      "studentNumber": "144124",
+      "name": "Jeff bozz",
+      "question": 5,
+      "actualExamTime": 7,
+      "notes": "rwe\nrer\newf\n",
+      "grade": "7"
+    },
+    {
+      "id": "3c54",
+      "examId": "345a",
+      "studentNumber": "123123123",
+      "name": "fewfwefwef"
     }
   ]
 }

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { fetchExams, fetchStudentsByExam } from "../api";
 
 export default function HistoryPage() {
   const [exams, setExams] = useState([]);
@@ -7,25 +7,22 @@ export default function HistoryPage() {
   const [students, setStudents] = useState([]);
 
   useEffect(() => {
-    // Hent alle eksamener ved mount
-    axios.get("http://localhost:3001/exams")
-      .then(res => setExams(res.data))
+    fetchExams()
+      .then(setExams)
       .catch(err => alert("Fejl ved hentning af eksamener: " + err.message));
   }, []);
 
-  // Hent studerende når valgt eksamen ændres
   useEffect(() => {
     if (!selectedExamId) {
       setStudents([]);
       return;
     }
 
-    axios.get(`http://localhost:3001/students?examId=${selectedExamId}`)
-      .then(res => setStudents(res.data))
+    fetchStudentsByExam(selectedExamId)
+      .then(setStudents)
       .catch(err => alert("Fejl ved hentning af studerende: " + err.message));
   }, [selectedExamId]);
 
-  // Beregn gennemsnit af karakterer (7-trin skala, antag karakter som tal)
   function calculateAverageGrade(students) {
     if (students.length === 0) return 0;
     const grades = students

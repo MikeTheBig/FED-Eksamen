@@ -1,8 +1,7 @@
 import { useState } from "react";
-import axios from "axios";
 import InputField from "../Component/InputField";
 import Button from "../Component/Button";
-
+import { createExam as createExamAPI } from "../api";
 
 export default function ExamCreate({ onCreated }) {
   const [term, setTerm] = useState("");
@@ -28,25 +27,23 @@ export default function ExamCreate({ onCreated }) {
     };
 
     try {
-  const response = await axios.post("http://localhost:3001/exams", exam);
-  alert("Eksamen oprettet!");
+      const response = await createExamAPI(exam);
+      alert("Eksamen oprettet!");
 
-  if (typeof onCreated === "function") {
-    onCreated(response.data);
-  }
+      if (typeof onCreated === "function") {
+        onCreated(response);
+      }
 
-  // Genstart input-felter til standardværdier
-  setTerm("");
-  setCourse("");
-  setDate("");
-  setQuestionCount(1);
-  setExamDuration(60);
-  setStartTime("");
-} catch (error) {
-  console.error(error);
-  alert("Noget gik galt ved oprettelse");
-}
-
+      setTerm("");
+      setCourse("");
+      setDate("");
+      setQuestionCount(1);
+      setExamDuration(60);
+      setStartTime("");
+    } catch (error) {
+      console.error(error);
+      alert("Noget gik galt ved oprettelse");
+    }
   };
 
   return (

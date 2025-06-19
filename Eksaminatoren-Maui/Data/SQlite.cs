@@ -40,12 +40,10 @@ public class DatabaseService
         {
             if (result.Id != 0)
             {
-                // Opdater eksisterende resultat
                 return _database.UpdateAsync(result);
             }
             else
             {
-                // Indsæt nyt resultat
                 return _database.InsertAsync(result);
             }
         }

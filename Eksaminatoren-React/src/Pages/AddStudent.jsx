@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { fetchExams, createStudent } from "../api";
 import Button from "../Component/Button";
 
 export default function AddStudent() {
@@ -9,10 +9,9 @@ export default function AddStudent() {
   const [studentName, setStudentName] = useState("");
 
   useEffect(() => {
-    // Hent alle eksamener ved komponent-mount
-    axios.get("http://localhost:3001/exams").then((res) => {
-      setExams(res.data);
-      if (res.data.length > 0) setSelectedExamId(res.data[0].id);
+    fetchExams().then((data) => {
+      setExams(data);
+      if (data.length > 0) setSelectedExamId(data[0].id);
     });
   }, []);
 
@@ -23,16 +22,14 @@ export default function AddStudent() {
     }
 
     const newStudent = {
-      examId: (selectedExamId),
+      examId: selectedExamId,
       studentNumber,
       name: studentName,
     };
 
     try {
-      await axios.post("http://localhost:3001/students", newStudent);
+      await createStudent(newStudent);
       alert(`Studerende ${studentName} tilføjet!`);
-
-      // Nulstil inputfelter
       setStudentNumber("");
       setStudentName("");
     } catch (error) {

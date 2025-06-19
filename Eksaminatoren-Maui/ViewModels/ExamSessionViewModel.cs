@@ -131,7 +131,6 @@ public partial class ExamSessionViewModel : ObservableObject
 
         if (RemainingTime.TotalSeconds <= 0)
         {
-            // Her kan du fx tilføje lyd eller visuel feedback
         }
     }
 
@@ -163,7 +162,6 @@ public partial class ExamSessionViewModel : ObservableObject
 
         await _database.SaveExamResultAsync(result);
 
-        // Ryd felter til næste studerende
         Notes = string.Empty;
         SelectedGrade = null;
         DrawnQuestionNumber = null;
@@ -185,7 +183,6 @@ public partial class ExamSessionViewModel : ObservableObject
             Application.Current.MainPage.DisplayAlert("Info", "Der er ikke flere studerende.", "OK");
         }
 
-        // Ryd state for næste studerende
         Notes = string.Empty;
         SelectedGrade = null;
         DrawnQuestionNumber = null;

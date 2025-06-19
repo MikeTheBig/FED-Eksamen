@@ -11,7 +11,6 @@
         <VerticalStackLayout Padding="20" Spacing="15">
             <Label Text="Eksamenssession" FontSize="24" HorizontalOptions="Center" />
             
-            <!-- Vælg eksamen -->
             <Picker
             Title="Vælg eksamen"
             ItemsSource="{Binding Exams}"
@@ -19,29 +18,22 @@
             SelectedItem="{Binding SelectedExam}" />
 
 
-            <!-- Studerende Info -->
             <Label Text="{Binding CurrentStudent.StudentNumber, StringFormat='Studienummer: {0}'}" FontSize="18" />
             <Label Text="{Binding CurrentStudent.Name, StringFormat='Navn: {0}'}" FontSize="18" />
 
-            <!-- Spørgsmål -->
             <Button Text="Træk spørgsmål" Command="{Binding DrawQuestionCommand}" />
-            <Label Text="{Binding DrawnQuestionNumber, StringFormat='Spørgsmål: {0}'}" FontSize="18" IsVisible="{Binding DrawnQuestionNumber, Converter={StaticResource NullToFalseConverter}}" />
+            <Label Text="{Binding DrawnQuestionNumber, StringFormat='Spørgsmål: {0}'}" FontSize="18" IsVisible="{Binding DrawnQuestionNumber}" />
 
-            <!-- Timer -->
             <Label Text="{Binding RemainingTimeDisplay}" FontSize="24" HorizontalOptions="Center" />
             <Button Text="Start eksamination" Command="{Binding StartExamCommand}" IsEnabled="{Binding CanStart}" />
-            <Button Text="Slut eksamination" Command="{Binding EndExamCommand}" IsEnabled="{Binding CanStop}" />
+            <Button Text="Slut eksamination" Command="{Binding EndExamCommand}" IsEnabled="{Binding CanStop}" BackgroundColor="#FFD68E8E"/>
 
-            <!-- Noter -->
             <Editor Placeholder="Skriv noter her..." Text="{Binding Notes}" AutoSize="TextChanges" HeightRequest="100" />
 
-            <!-- Karakter -->
             <Picker Title="Vælg karakter" ItemsSource="{Binding GradeOptions}" SelectedItem="{Binding SelectedGrade}" />
 
-            <!-- Gem resultat -->
             <Button Text="Gem resultat" Command="{Binding SaveResultCommand}" />
 
-            <!-- Navigation -->
             <Button Text="Næste studerende" Command="{Binding NextStudentCommand}" />
 
         </VerticalStackLayout>

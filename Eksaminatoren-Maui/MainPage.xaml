@@ -6,6 +6,7 @@
 
     <VerticalStackLayout Padding="20" Spacing="10">
         <Label Text="Velkommen til Eksaminatoren!" FontSize="24" HorizontalOptions="Center" />
+        <Label Text="Ovenover kan du vælge en af mulighederne for at starte eksaminationen:" FontSize="18" HorizontalOptions="Center" />
     </VerticalStackLayout>
 
 </ContentPage>

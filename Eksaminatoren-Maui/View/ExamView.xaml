@@ -7,35 +7,28 @@
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="15">
 
-            <!-- Eksamenstermin -->
             <Label Text="Eksamenstermin" />
             <Entry Placeholder="Fx 'Sommer 25'" 
                    Text="{Binding ExamTermin}" />
 
-            <!-- Kursusnavn -->
             <Label Text="Kursusnavn" />
             <Entry Placeholder="Indtast kursusnavn" 
                    Text="{Binding CourseName}" />
 
-            <!-- Dato -->
             <Label Text="Dato" />
             <DatePicker Date="{Binding Date}" />
 
-            <!-- Antal spørgsmål -->
             <Label Text="Antal spørgsmål" />
             <Entry Keyboard="Numeric" 
                    Text="{Binding NumberOfQuestions}" />
 
-            <!-- Eksaminationstid i minutter -->
             <Label Text="Eksaminationstid (minutter)" />
             <Entry Keyboard="Numeric" 
                    Text="{Binding ExamDurationMinutes}" />
 
-            <!-- Starttidspunkt -->
             <Label Text="Starttidspunkt" />
             <TimePicker Time="{Binding StartTime}" />
 
-            <!-- Gem knap -->
             <Button Text="Gem Eksamen" 
                     Command="{Binding AddExamCommand}" 
                     BackgroundColor="#0078D7" 

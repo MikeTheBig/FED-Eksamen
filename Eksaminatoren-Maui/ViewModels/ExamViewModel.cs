@@ -54,7 +54,6 @@ public partial class ExamViewModel : ObservableObject
     [RelayCommand]
     public async Task AddExamAsync()
     {
-        // Grundlæggende validering
         if (string.IsNullOrWhiteSpace(ExamTermin) || 
             string.IsNullOrWhiteSpace(CourseName) || 
             StartTime == TimeSpan.Zero)
@@ -96,7 +95,6 @@ public partial class ExamViewModel : ObservableObject
             await _database.AddExamAsync(exam);
             await LoadExamsAsync();
 
-            // Nulstil inputfelter efter succesfuld gemning
             ExamTermin = string.Empty;
             CourseName = string.Empty;
             NumberOfQuestions = string.Empty;

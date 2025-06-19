@@ -37,7 +37,6 @@ public partial class StudentViewModel : ObservableObject
     {
         if (SelectedExam == null)
         {
-            // Hvis ingen eksamen valgt, kan man f.eks. hente alle studerende eller ingen
             Students.Clear();
             return;
         }
@@ -56,7 +55,6 @@ public partial class StudentViewModel : ObservableObject
         foreach (var exam in examsFromDb)
             Exams.Add(exam);
 
-        // Sæt automatisk valgt eksamen til den første, hvis muligt
         if (Exams.Count > 0)
         {
             SelectedExam = Exams[0];
@@ -95,7 +93,6 @@ public partial class StudentViewModel : ObservableObject
 
     partial void OnSelectedExamChanged(Exam value)
     {
-        // Når valgt eksamen ændres, load studerende for den eksamen
         _ = LoadStudentsAsync();
     }
 }

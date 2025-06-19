@@ -1,13 +1,12 @@
-using SQLite;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Eksaminatoren_Maui.Data;
 using Eksaminatoren_Maui.Models;
 using System.Collections.ObjectModel;
-using Eksaminatoren_Maui.Data;
-using CommunityToolkit.Mvvm.Input;
-
-
+using System.Threading.Tasks;
 
 namespace Eksaminatoren_Maui.ViewModels;
+
 public partial class ExamViewModel : ObservableObject
 {
     private readonly DatabaseService _database;
@@ -15,56 +14,85 @@ public partial class ExamViewModel : ObservableObject
     [ObservableProperty]
     private ObservableCollection<Exam> exams = new();
 
-    // Bindbare properties til inputfelter
     [ObservableProperty]
-    private string courseName;
+    private string courseName = string.Empty;
 
     [ObservableProperty]
-    private DateTime date = DateTime.Now;
+    private string numberOfQuestions = string.Empty;
 
     [ObservableProperty]
-    private int numberOfQuestions;
+    private string examDurationMinutes = string.Empty;
 
     [ObservableProperty]
-    private int examDurationMinutes;
+    private string startTime = string.Empty; // Gemt som string, parse senere
 
     [ObservableProperty]
-    private string startTime;
+    private DateTime date = DateTime.Today;
+
+    [ObservableProperty]
+    private Exam selectedExam;
 
     public ExamViewModel(DatabaseService database)
     {
         _database = database;
-        _ = LoadExamsAsync();
     }
 
     [RelayCommand]
-    private async Task AddExamAsync()
+    public async Task LoadExamsAsync()
     {
-        var newExam = new Exam
+        Exams.Clear();
+        var examsFromDb = await _database.GetExamsAsync();
+        foreach (var exam in examsFromDb)
+        {
+            Exams.Add(exam);
+        }
+    }
+
+    [RelayCommand]
+    public async Task AddExamAsync()
+    {
+        if (string.IsNullOrWhiteSpace(CourseName) || string.IsNullOrWhiteSpace(StartTime))
+            return;
+
+        if (!int.TryParse(NumberOfQuestions, out int parsedNumberOfQuestions) ||
+            !int.TryParse(ExamDurationMinutes, out int parsedExamDurationMinutes))
+        {
+            // Her kan du evt. vise fejl til bruger, fx med DisplayAlert (kræver eventuelt reference til side)
+            return;
+        }
+
+        if (!TimeSpan.TryParse(StartTime, out TimeSpan parsedStartTime))
+        {
+            // Fejl i tidspunkt
+            return;
+        }
+
+        var exam = new Exam
         {
             CourseName = CourseName,
             Date = Date,
-            NumberOfQuestions = NumberOfQuestions,
-            ExamDurationMinutes = ExamDurationMinutes,
-            StartTime = TimeSpan.TryParse(StartTime, out var parsedTime) ? parsedTime : TimeSpan.Zero,
-            ExamTermin = "Sommer 25"  // evt. også som input hvis du vil
+            ExamTermin = Date.Month <= 6 ? "Forår" : "Efterår",
+            NumberOfQuestions = parsedNumberOfQuestions,
+            ExamDurationMinutes = parsedExamDurationMinutes,
+            StartTime = parsedStartTime
         };
 
-        await _database.AddExamAsync(newExam);
-        Exams.Add(newExam);
+        await _database.AddExamAsync(exam);
 
-        // Ryd inputfelter efter tilføjelse
+        await LoadExamsAsync();
+
+        // Ryd inputfelter
         CourseName = string.Empty;
-        NumberOfQuestions = 0;
-        ExamDurationMinutes = 0;
+        NumberOfQuestions = string.Empty;
+        ExamDurationMinutes = string.Empty;
         StartTime = string.Empty;
-        Date = DateTime.Now;
+        Date = DateTime.Today;
     }
 
-    public async Task LoadExamsAsync()
+    public bool IsExamSelected => SelectedExam != null;
+
+    partial void OnSelectedExamChanged(Exam value)
     {
-        var list = await _database.GetExamsAsync();
-        Exams = new ObservableCollection<Exam>(list);
+        OnPropertyChanged(nameof(IsExamSelected));
     }
 }
-

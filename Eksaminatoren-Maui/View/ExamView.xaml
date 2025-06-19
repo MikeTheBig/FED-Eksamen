@@ -1,33 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Eksaminatoren_Maui.Views.ExamView"
              Title="Eksamen">
 
-    <VerticalStackLayout Padding="20" Spacing="15">
-        <Label Text="Eksamener" FontSize="24" HorizontalOptions="Center"/>
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
 
-        <CollectionView ItemsSource="{Binding Exams}"
-                        SelectionMode="Single"
-                        SelectedItem="{Binding SelectedExam, Mode=TwoWay}">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <StackLayout Padding="10">
-                        <Label Text="{Binding CourseName}" FontAttributes="Bold" />
-                        <Label Text="{Binding Date, StringFormat='Dato: {0:dd-MM-yyyy}'}" />
-                        <Label Text="{Binding ExamTermin}" FontAttributes="Italic" />
-                    </StackLayout>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+            <Label Text="Eksamener" FontSize="24" HorizontalOptions="Center"/>
 
-        <Label Text="Tilføj ny eksamen:" FontAttributes="Bold" Margin="0,20,0,0"/>
+            <CollectionView ItemsSource="{Binding Exams}"
+                            SelectionMode="Single"
+                            SelectedItem="{Binding SelectedExam, Mode=TwoWay}"
+                            HeightRequest="300">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout Padding="10">
+                            <Label Text="{Binding CourseName}" FontAttributes="Bold" />
+                            <Label Text="{Binding Date, StringFormat='Dato: {0:dd-MM-yyyy}'}" />
+                            <Label Text="{Binding ExamTermin}" FontAttributes="Italic" />
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
 
-        <Entry Placeholder="Kursusnavn" Text="{Binding CourseName}" />
-        <DatePicker Date="{Binding Date}" />
-        <Entry Placeholder="Antal spørgsmål" Keyboard="Numeric" Text="{Binding NumberOfQuestions}" />
-        <Entry Placeholder="Eksamen varighed (min)" Keyboard="Numeric" Text="{Binding ExamDurationMinutes}" />
-        <Entry Placeholder="Start tidspunkt (fx 09:00)" Text="{Binding StartTime}" />
+            <Button Text="Start eksamen"
+                    Command="{Binding StartExamAsyncCommand}"
+                    IsEnabled="{Binding IsExamSelected}"
+                    Margin="0,10,0,0"/>
 
-        <Button Text="Tilføj Eksamen" Command="{Binding AddExamAsyncCommand}" />
-    </VerticalStackLayout>
+            <Label Text="Tilføj ny eksamen:" FontAttributes="Bold" Margin="0,20,0,0"/>
+
+            <Entry Placeholder="Kursusnavn" Text="{Binding CourseName, Mode=TwoWay}" />
+            <DatePicker Date="{Binding Date, Mode=TwoWay}" />
+
+            <Entry Placeholder="Antal spørgsmål" Keyboard="Numeric" Text="{Binding NumberOfQuestions, Mode=TwoWay}" />
+            <Entry Placeholder="Eksamen varighed (min)" Keyboard="Numeric" Text="{Binding ExamDurationMinutes, Mode=TwoWay}" />
+            <Entry Placeholder="Start tidspunkt (fx 09:00)" Text="{Binding StartTime, Mode=TwoWay}" />
+
+            <Button Text="Tilføj Eksamen" Command="{Binding AddExamAsyncCommand}" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
 </ContentPage>

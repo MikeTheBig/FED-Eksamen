@@ -4,7 +4,8 @@ namespace Eksaminatoren_Maui.Models;
 
 public class Exam
 {
-    public int Id { get; set; }  // Hvis du bruger string id (evt. Guid)
+    [PrimaryKey, AutoIncrement]
+    public int Id { get; set; } 
     public string ExamTermin { get; set; } = string.Empty; // Initialiseret
     public string CourseName { get; set; } = string.Empty; // Initialiseret
     public DateTime Date { get; set; }

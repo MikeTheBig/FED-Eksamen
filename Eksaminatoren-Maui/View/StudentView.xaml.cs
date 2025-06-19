@@ -1,7 +1,4 @@
-using Eksaminatoren_Maui.Data;
 using Eksaminatoren_Maui.ViewModels;
-using Eksaminatoren_Maui.Models;
-using Microsoft.Maui.Storage;
 
 namespace Eksaminatoren_Maui.Views
 {
@@ -20,24 +17,6 @@ namespace Eksaminatoren_Maui.Views
         {
             base.OnAppearing();
             await _viewModel.LoadStudentsAsync();
-        }
-
-        private async void OnAddStudentClicked(object sender, EventArgs e)
-        {
-            if (!string.IsNullOrWhiteSpace(_viewModel.StudentNumber) && !string.IsNullOrWhiteSpace(_viewModel.Name))
-            {
-                await _viewModel.AddStudentAsync(new Student
-                {
-                    StudentNumber = _viewModel.StudentNumber,
-                    Name = _viewModel.Name
-                });
-                _viewModel.StudentNumber = string.Empty;
-                _viewModel.Name = string.Empty;
-            }
-            else
-            {
-                await DisplayAlert("Fejl", "Indtast både studienummer og navn.", "OK");
-            }
         }
     }
 }

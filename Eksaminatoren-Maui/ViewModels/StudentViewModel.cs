@@ -5,44 +5,58 @@ using Eksaminatoren_Maui.Models;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
-namespace Eksaminatoren_Maui.ViewModels;
-
-public partial class StudentViewModel : ObservableObject
+namespace Eksaminatoren_Maui.ViewModels
 {
-    private readonly DatabaseService _database;
-
-    [ObservableProperty]
-    private ObservableCollection<Student> students;
-
-    [ObservableProperty]
-    private string studentNumber;
-
-    [ObservableProperty]
-    private string name;
-
-    public StudentViewModel(DatabaseService database)
+    public partial class StudentViewModel : ObservableObject
     {
-        _database = database;
-        Students = new ObservableCollection<Student>();
-    }
+        private readonly DatabaseService _database;
 
-    [RelayCommand]
-    public async Task AddStudentAsync(Student student)
-    {
-        await _database.AddStudentAsync(student);
-        Students.Add(student);
-        StudentNumber = string.Empty;
-        Name = string.Empty;
-    }
+        [ObservableProperty]
+        private ObservableCollection<Student> students = new();
 
-    [RelayCommand]
-    public async Task LoadStudentsAsync()
-    {
-        var students = await _database.GetStudentsByExamAsync(1); // Adjust examId as needed
-        Students.Clear();
-        foreach (var student in students)
+        [ObservableProperty]
+        private string studentNumber;
+
+        [ObservableProperty]
+        private string name;
+
+        public StudentViewModel(DatabaseService database)
         {
-            Students.Add(student);
+            _database = database;
+        }
+
+        [RelayCommand]
+        public async Task LoadStudentsAsync()
+        {
+            var studentsFromDb = await _database.GetStudentsByExamAsync(1); // <-- evt. dynamisk examId senere
+            Students.Clear();
+            foreach (var student in studentsFromDb)
+            {
+                Students.Add(student);
+            }
+        }
+
+        [RelayCommand]
+        public async Task AddStudentAsync()
+        {
+            if (string.IsNullOrWhiteSpace(Name) || string.IsNullOrWhiteSpace(StudentNumber))
+                return;
+
+            var newStudent = new Student
+            {
+                Name = Name,
+                StudentNumber = StudentNumber,
+                ExamId = 1, // <-- Gør dynamisk senere!
+                Order = Students.Count + 1
+            };
+
+            var result = await _database.AddStudentAsync(newStudent);
+            if (result > 0)
+            {
+                Students.Add(newStudent);
+                Name = string.Empty;
+                StudentNumber = string.Empty;
+            }
         }
     }
 }

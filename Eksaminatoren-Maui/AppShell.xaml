@@ -5,24 +5,20 @@
     xmlns:views="clr-namespace:Eksaminatoren_Maui.Views"
     xmlns:local="clr-namespace:Eksaminatoren_Maui"
     x:Class="Eksaminatoren_Maui.AppShell"
-    Shell.FlyoutBehavior="Disabled" >
-
-    <!-- Flyout eller bottom tab navigation -->
- <TabBar>
-    <Tab Title="Startside" Icon="icon_home.png">
-        <ShellContent ContentTemplate="{DataTemplate local:MainPage}" />
-    </Tab>
-
-    <Tab Title="Eksamener" Icon="icon_exam.png" Route="Eksamener">
-        <ShellContent ContentTemplate="{DataTemplate views:ExamView}" />
-    </Tab>
-
-    <Tab Title="Studerende" Icon="icon_student.png" Route="Studerende">
-        <ShellContent ContentTemplate="{DataTemplate views:StudentView}" />
-    </Tab>
-
-    <Tab Title="Historik" Icon="icon_results.png" Route="Historik">
-        <ShellContent ContentTemplate="{DataTemplate views:HistoryView}" />
-    </Tab>
+    Shell.FlyoutBehavior="Disabled">
+    <TabBar>
+        <Tab Title="Startside" Icon="icon_home.png">
+            <ShellContent ContentTemplate="{DataTemplate local:MainPage}" />
+        </Tab>
+        <Tab Title="Eksamener" Icon="icon_exam.png" Route="Eksamener">
+            <ShellContent ContentTemplate="{DataTemplate views:ExamView}" />
+        </Tab>
+        <Tab Title="Studerende" Icon="icon_student.png" Route="Studerende">
+            <ShellContent ContentTemplate="{DataTemplate views:StudentView}" />
+        </Tab>
+        <Tab Title="Historik" Icon="icon_history.png">
+            <ShellContent ContentTemplate="{DataTemplate views:HistoryView}" Route="HistoryView"/>
+        </Tab>
     </TabBar>
+    <ShellContent Route="ExamSessionView" ContentTemplate="{DataTemplate views:ExamSessionView}"/>
 </Shell>

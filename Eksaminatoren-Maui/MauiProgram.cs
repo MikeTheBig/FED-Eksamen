@@ -31,6 +31,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<ExamViewModel>();
         builder.Services.AddSingleton<StudentViewModel>();
         builder.Services.AddSingleton<HistoryViewModel>();
+		builder.Services.AddTransient<ExamSessionView>();
 
         return builder.Build();
     }

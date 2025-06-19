@@ -1,16 +1,22 @@
-using Eksaminatoren_Maui.Data;
 using Eksaminatoren_Maui.ViewModels;
-using Microsoft.Maui.Storage;
 
 namespace Eksaminatoren_Maui.Views
 {
     public partial class ExamView : ContentPage
-{
-    public ExamView(ExamViewModel viewModel)
     {
-        InitializeComponent();
-        BindingContext = viewModel;
-    }
-}
+        private ExamViewModel _viewModel;
 
+        public ExamView(ExamViewModel viewModel)
+        {
+            InitializeComponent();
+            _viewModel = viewModel;
+            BindingContext = _viewModel;
+        }
+
+        protected override async void OnAppearing()
+        {
+            base.OnAppearing();
+            await _viewModel.LoadExamsAsync();
+        }
+    }
 }

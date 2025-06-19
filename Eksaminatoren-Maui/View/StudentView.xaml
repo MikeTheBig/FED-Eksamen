@@ -3,24 +3,37 @@
              x:Class="Eksaminatoren_Maui.Views.StudentView"
              Title="Studerende">
 
-    <VerticalStackLayout Padding="20" Spacing="15">
-        <Label Text="Studerende til eksamen" FontSize="24" HorizontalOptions="Center"/>
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
 
-        <CollectionView ItemsSource="{Binding Students}">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <StackLayout Padding="10">
-                        <Label Text="{Binding Order}" />
-                        <Label Text="{Binding Name}" />
-                        <Label Text="{Binding StudentNumber}" />
-                    </StackLayout>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+            <Label Text="Studerende til eksamen" FontSize="24" HorizontalOptions="Center"/>
 
-        <Entry Placeholder="Studienummer" Text="{Binding StudentNumber}" />
-        <Entry Placeholder="Navn" Text="{Binding Name}" />
-        <Button Text="Tilføj Studerende" Command="{Binding AddStudentCommand}" />
+            <CollectionView ItemsSource="{Binding Students}" HeightRequest="200">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout Padding="10" BackgroundColor="#eeeeee" Margin="0,5">
+                            <Label Text="{Binding Order}" FontAttributes="Bold"/>
+                            <Label Text="{Binding Name}" />
+                            <Label Text="{Binding StudentNumber}" />
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
 
-    </VerticalStackLayout>
+            <!-- INPUT FORM -->
+            <Label Text="Tilføj ny studerende:" FontAttributes="Bold" Margin="0,20,0,0"/>
+
+            <Entry Placeholder="Studienummer"
+                   Text="{Binding StudentNumber, Mode=TwoWay}" 
+                   Keyboard="Numeric" />
+
+            <Entry Placeholder="Navn"
+                   Text="{Binding Name, Mode=TwoWay}" />
+
+            <Button Text="Tilføj Studerende"
+                    Command="{Binding AddStudentCommand}" 
+                    BackgroundColor="#2196F3"
+                    TextColor="White"/>
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

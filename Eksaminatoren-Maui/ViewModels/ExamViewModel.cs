@@ -15,6 +15,9 @@ public partial class ExamViewModel : ObservableObject
     private ObservableCollection<Exam> exams = new();
 
     [ObservableProperty]
+    private string examTermin = string.Empty;
+
+    [ObservableProperty]
     private string courseName = string.Empty;
 
     [ObservableProperty]
@@ -24,7 +27,7 @@ public partial class ExamViewModel : ObservableObject
     private string examDurationMinutes = string.Empty;
 
     [ObservableProperty]
-    private string startTime = string.Empty; // Gemt som string, parse senere
+    private TimeSpan startTime = TimeSpan.Zero;
 
     [ObservableProperty]
     private DateTime date = DateTime.Today;
@@ -51,42 +54,62 @@ public partial class ExamViewModel : ObservableObject
     [RelayCommand]
     public async Task AddExamAsync()
     {
-        if (string.IsNullOrWhiteSpace(CourseName) || string.IsNullOrWhiteSpace(StartTime))
-            return;
-
-        if (!int.TryParse(NumberOfQuestions, out int parsedNumberOfQuestions) ||
-            !int.TryParse(ExamDurationMinutes, out int parsedExamDurationMinutes))
+        // Grundlæggende validering
+        if (string.IsNullOrWhiteSpace(ExamTermin) || 
+            string.IsNullOrWhiteSpace(CourseName) || 
+            StartTime == TimeSpan.Zero)
         {
-            // Her kan du evt. vise fejl til bruger, fx med DisplayAlert (kræver eventuelt reference til side)
+            await Application.Current.MainPage.DisplayAlert("Fejl", "Udfyld venligst alle felter.", "OK");
             return;
         }
 
-        if (!TimeSpan.TryParse(StartTime, out TimeSpan parsedStartTime))
+        if (!int.TryParse(NumberOfQuestions, out int parsedNumberOfQuestions) || parsedNumberOfQuestions <= 0)
         {
-            // Fejl i tidspunkt
+            await Application.Current.MainPage.DisplayAlert("Fejl", "Indtast et gyldigt antal spørgsmål.", "OK");
+            return;
+        }
+
+        if (!int.TryParse(ExamDurationMinutes, out int parsedExamDurationMinutes) || parsedExamDurationMinutes <= 0)
+        {
+            await Application.Current.MainPage.DisplayAlert("Fejl", "Indtast en gyldig eksamenstid.", "OK");
+            return;
+        }
+
+        if (StartTime == TimeSpan.Zero)
+        {
+            await Application.Current.MainPage.DisplayAlert("Fejl", "Indtast et gyldigt starttidspunkt.", "OK");
             return;
         }
 
         var exam = new Exam
         {
+            ExamTermin = ExamTermin,
             CourseName = CourseName,
             Date = Date,
-            ExamTermin = Date.Month <= 6 ? "Forår" : "Efterår",
             NumberOfQuestions = parsedNumberOfQuestions,
             ExamDurationMinutes = parsedExamDurationMinutes,
-            StartTime = parsedStartTime
+            StartTime = StartTime
         };
 
-        await _database.AddExamAsync(exam);
+        try
+        {
+            await _database.AddExamAsync(exam);
+            await LoadExamsAsync();
 
-        await LoadExamsAsync();
+            // Nulstil inputfelter efter succesfuld gemning
+            ExamTermin = string.Empty;
+            CourseName = string.Empty;
+            NumberOfQuestions = string.Empty;
+            ExamDurationMinutes = string.Empty;
+            StartTime = TimeSpan.Zero;
+            Date = DateTime.Today;
 
-        // Ryd inputfelter
-        CourseName = string.Empty;
-        NumberOfQuestions = string.Empty;
-        ExamDurationMinutes = string.Empty;
-        StartTime = string.Empty;
-        Date = DateTime.Today;
+            await Application.Current.MainPage.DisplayAlert("Succes", "Eksamen gemt!", "OK");
+        }
+        catch (Exception ex)
+        {
+            await Application.Current.MainPage.DisplayAlert("Fejl", $"Kunne ikke gemme eksamen: {ex.Message}", "OK");
+        }
     }
 
     public bool IsExamSelected => SelectedExam != null;

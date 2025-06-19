@@ -64,7 +64,7 @@ public void DrawQuestion()
     [RelayCommand]
     public void StartExamination()
     {
-        TimeRemaining = TimeSpan.FromMinutes(_exam.DurationMinutes);
+        TimeRemaining = TimeSpan.FromMinutes(_exam.ExamDurationMinutes);
         IsTimerRunning = true;
 
         _timer = new System.Timers.Timer(1000);
@@ -96,7 +96,7 @@ public void DrawQuestion()
         {
             StudentId = CurrentStudent.Id,
             QuestionNumber = RandomQuestionNumber,
-            ActualDurationMinutes = _exam.DurationMinutes - (int)TimeRemaining.TotalMinutes,
+            ActualDurationMinutes = _exam.ExamDurationMinutes - (int)TimeRemaining.TotalMinutes,
             Notes = Notes,
             Grade = Grade
         };

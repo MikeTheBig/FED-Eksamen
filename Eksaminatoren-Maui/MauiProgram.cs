@@ -11,7 +11,6 @@ public static class MauiProgram
 		string dbPath = Path.Combine(
     Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
     "eksaminatoren.db3");
-	        // Tilføj DatabaseService som singleton med stien til databasen
         builder.Services.AddSingleton(new DatabaseService(dbPath));
 
         builder
@@ -22,7 +21,7 @@ public static class MauiProgram
             });
 
 
-        // Registrer dine ViewModels og Views til dependency injection
+        
         builder.Services.AddSingleton<MainPage>();
         builder.Services.AddSingleton<ExamView>();
         builder.Services.AddSingleton<StudentView>();

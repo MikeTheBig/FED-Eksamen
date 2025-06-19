@@ -1,13 +1,14 @@
+/* Standard styling (mobile-first) */
 #root {
-  max-width: 1280px;
+  max-width: 100%;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 1rem;
   text-align: center;
 }
 
 .logo {
-  height: 6em;
-  padding: 1.5em;
+  height: 4em;
+  padding: 1em;
   will-change: filter;
   transition: filter 300ms;
 }
@@ -34,9 +35,43 @@
 }
 
 .card {
-  padding: 2em;
+  padding: 1.5em;
 }
 
 .read-the-docs {
   color: #888;
+}
+
+/* Medium screens (tablets) */
+@media (min-width: 768px) {
+  #root {
+    max-width: 720px;
+    padding: 2rem;
+  }
+
+  .logo {
+    height: 5em;
+    padding: 1.5em;
+  }
+
+  .card {
+    padding: 2em;
+  }
+}
+
+/* Large screens (desktops) */
+@media (min-width: 1024px) {
+  #root {
+    max-width: 1280px;
+    padding: 3rem;
+  }
+
+  .logo {
+    height: 6em;
+    padding: 2em;
+  }
+
+  .card {
+    padding: 3em;
+  }
 }

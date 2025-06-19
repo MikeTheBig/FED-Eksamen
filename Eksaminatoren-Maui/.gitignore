@@ -1,0 +1,50 @@
+# Visual Studio / VS Code
+.vscode/
+.vs/
+
+# Build output
+bin/
+obj/
+
+# User-specific files
+*.user
+*.userosscache
+*.suo
+*.sln.docstates
+
+# Rider
+.idea/
+
+# SQLite database file (valgfrit - hvis du vil versionere databasen, fjern denne linje)
+*.db
+
+# DotNet Core tools
+*.dotnet_tools/
+
+# NuGet packages
+*.nupkg
+packages/
+*.snupkg
+
+# JetBrains Rider
+.idea/
+
+# MacOS
+.DS_Store
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+
+# Publish output
+publish/
+
+# Other files
+*.vsix
+
+# SQLite temporary files (valgfrit)
+*.db-shm
+*.db-wal

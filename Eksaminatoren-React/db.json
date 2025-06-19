@@ -1,7 +1,7 @@
 {
   "exams": [
     {
-      "id": 1,
+      "id": "1",
       "term": "sommer 25",
       "course": "SW4FED-02",
       "date": "2025-06-20",
@@ -10,33 +10,47 @@
       "startTime": "09:00"
     },
     {
-      "id": "905d",
-      "term": "fwefwe",
-      "course": "rew",
-      "date": "2025-06-20",
-      "questionCount": 1,
+      "id": "935f",
+      "term": "Sommer 2025",
+      "course": "Fysik",
+      "date": "2025-06-23",
+      "questionCount": 4,
       "examDurationMinutes": 15,
-      "startTime": "00:00"
+      "startTime": "11:42"
     }
   ],
   "students": [
     {
-      "id": 1,
+      "id": "1",
       "examId": 1,
       "studentNumber": "123456",
       "name": "Morten Hansen"
     },
     {
-      "id": "66f0",
-      "examId": null,
-      "studentNumber": "3213213",
+      "id": "c06b",
+      "examId": "935f",
+      "studentNumber": "2023123213",
+      "name": "Michael Dao",
+      "question": 4,
+      "actualExamTime": 1,
+      "notes": "dwqdqw",
+      "grade": "12"
+    },
+    {
+      "id": "5924",
+      "examId": 1,
+      "studentNumber": "423443",
       "name": "Jens"
     },
     {
-      "id": "3441",
-      "examId": 1,
-      "studentNumber": "123455",
-      "name": "Jens Petersen"
+      "id": "a40d",
+      "examId": "935f",
+      "studentNumber": "123123",
+      "name": "Torben",
+      "question": 2,
+      "actualExamTime": 1,
+      "notes": "ewfwe",
+      "grade": "10"
     }
   ],
   "examSessions": []

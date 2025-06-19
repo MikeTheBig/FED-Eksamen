@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Button from "../Component/Button";
 
 export default function AddStudent() {
   const [exams, setExams] = useState([]);
@@ -22,7 +23,7 @@ export default function AddStudent() {
     }
 
     const newStudent = {
-      examId: Number(selectedExamId),
+      examId: (selectedExamId),
       studentNumber,
       name: studentName,
     };
@@ -81,12 +82,12 @@ export default function AddStudent() {
         />
       </label>
 
-      <button
+      <Button
         onClick={addStudent}
         className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 transition"
       >
         Tilføj Studerende
-      </button>
+      </Button>
     </div>
   );
 }

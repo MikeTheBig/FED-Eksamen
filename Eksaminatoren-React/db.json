@@ -1,0 +1,43 @@
+{
+  "exams": [
+    {
+      "id": 1,
+      "term": "sommer 25",
+      "course": "SW4FED-02",
+      "date": "2025-06-20",
+      "questionCount": 10,
+      "examDurationMinutes": 15,
+      "startTime": "09:00"
+    },
+    {
+      "id": "905d",
+      "term": "fwefwe",
+      "course": "rew",
+      "date": "2025-06-20",
+      "questionCount": 1,
+      "examDurationMinutes": 15,
+      "startTime": "00:00"
+    }
+  ],
+  "students": [
+    {
+      "id": 1,
+      "examId": 1,
+      "studentNumber": "123456",
+      "name": "Morten Hansen"
+    },
+    {
+      "id": "66f0",
+      "examId": null,
+      "studentNumber": "3213213",
+      "name": "Jens"
+    },
+    {
+      "id": "3441",
+      "examId": 1,
+      "studentNumber": "123455",
+      "name": "Jens Petersen"
+    }
+  ],
+  "examSessions": []
+}

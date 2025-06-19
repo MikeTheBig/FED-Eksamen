@@ -26,11 +26,13 @@ public static class MauiProgram
         builder.Services.AddSingleton<ExamView>();
         builder.Services.AddSingleton<StudentView>();
         builder.Services.AddSingleton<HistoryView>();
+        builder.Services.AddSingleton<ExamResultView>();
+        builder.Services.AddSingleton<ExamSessionViewModel>();
 
         builder.Services.AddSingleton<ExamViewModel>();
         builder.Services.AddSingleton<StudentViewModel>();
         builder.Services.AddSingleton<HistoryViewModel>();
-		builder.Services.AddTransient<ExamSessionView>();
+		builder.Services.AddSingleton<ExamSessionView>();
 
         return builder.Build();
     }

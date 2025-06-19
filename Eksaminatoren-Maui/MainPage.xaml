@@ -6,7 +6,6 @@
 
     <VerticalStackLayout Padding="20" Spacing="10">
         <Label Text="Velkommen til Eksaminatoren!" FontSize="24" HorizontalOptions="Center" />
-        <Button Text="Gå til eksamener" Clicked="OnGoToExamsClicked" />
     </VerticalStackLayout>
 
 </ContentPage>

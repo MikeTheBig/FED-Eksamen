@@ -1,20 +1,27 @@
-using Eksaminatoren_Maui.Models;
+using Eksaminatoren_Maui.ViewModels;
+using Eksaminatoren_Maui.Data;
 
 namespace Eksaminatoren_Maui.Views;
 
 public partial class ExamSessionView : ContentPage
 {
-    public Student? Student { get; private set; }
+    private readonly ExamSessionViewModel _viewModel;
 
-    public ExamSessionView()
+    public ExamSessionView(DatabaseService database)
     {
         InitializeComponent();
-        BindingContext = this;
+        _viewModel = new ExamSessionViewModel(database);
+        BindingContext = _viewModel;
     }
 
-    public void SetStudent(Student student)
+    protected override async void OnAppearing()
     {
-        Student = student;
-        OnPropertyChanged(nameof(Student));
+        base.OnAppearing();
+        await _viewModel.LoadExamsAsync();
+    }
+
+    public async Task StartSessionAsync(int examId)
+    {
+        await _viewModel.LoadExamSessionAsync(examId);
     }
 }

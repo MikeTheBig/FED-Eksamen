@@ -4,33 +4,36 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Title="Eksamenshistorik">
-    <VerticalStackLayout Padding="20" Spacing="15">
-        <Label Text="Eksamenshistorik" FontSize="24" HorizontalOptions="Center"/>
-        <Picker
-            Title="Vælg eksamen"
-            ItemsSource="{Binding Exams}"
-            SelectedItem="{Binding SelectedExam}"
-            ItemDisplayBinding="{Binding CourseName}"
-            HorizontalOptions="FillAndExpand"/>
-        <Label
-            Text="{Binding AverageGrade, StringFormat='Gennemsnitlig karakter: {0:F2}'}"
-            FontSize="18"
-            IsVisible="{Binding IsExamSelected}"/>
-        <CollectionView
-            ItemsSource="{Binding ExamResults}"
-            IsVisible="{Binding IsExamSelected}">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <StackLayout Padding="10">
-                        <Label Text="{Binding StudentName, StringFormat='Navn: {0}'}"/>
-                        <Label Text="{Binding StudentNumber, StringFormat='Studienummer: {0}'}"/>
-                        <Label Text="{Binding Grade, StringFormat='Karakter: {0:F2}'}"/>
-                        <Label Text="{Binding Notes, StringFormat='Noter: {0}'}"/>
-                        <Label Text="{Binding QuestionNumber, StringFormat='Spørgsmål: {0}'}"/>
-                        <Label Text="{Binding ActualDurationMinutes, StringFormat='Varighed: {0} min'}"/>
-                    </StackLayout>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-    </VerticalStackLayout>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+            <Label Text="Eksamenshistorik" FontSize="24" HorizontalOptions="Center"/>
+            <Picker
+                Title="Vælg eksamen"
+                ItemsSource="{Binding Exams}"
+                SelectedItem="{Binding SelectedExam}"
+                ItemDisplayBinding="{Binding CourseName}"
+                HorizontalOptions="FillAndExpand"/>
+            <Label
+                Text="{Binding AverageGrade, StringFormat='Gennemsnitlig karakter: {0:F2}'}"
+                FontSize="18"
+                IsVisible="{Binding IsExamSelected}"/>
+            <CollectionView
+                ItemsSource="{Binding ExamResults}"
+                IsVisible="{Binding IsExamSelected}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout Padding="10">
+                            <Label Text="{Binding StudentName, StringFormat='Navn: {0}'}"/>
+                            <Label Text="{Binding StudentNumber, StringFormat='Studienummer: {0}'}"/>
+                            <Label Text="{Binding Grade, StringFormat='Karakter: {0:F2}'}"/>
+                            <Label Text="{Binding Notes, StringFormat='Noter: {0}'}"/>
+                            <Label Text="{Binding QuestionNumber, StringFormat='Spørgsmål: {0}'}"/>
+                            <Label Text="{Binding ActualDurationMinutes, StringFormat='Varighed: {0} min'}"/>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

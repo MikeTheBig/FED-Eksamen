@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8" ?>
 <Shell
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
@@ -6,19 +5,27 @@
     xmlns:local="clr-namespace:Eksaminatoren_Maui"
     x:Class="Eksaminatoren_Maui.AppShell"
     Shell.FlyoutBehavior="Disabled">
+
     <TabBar>
         <Tab Title="Startside" Icon="icon_home.png">
-            <ShellContent ContentTemplate="{DataTemplate local:MainPage}" />
+            <ShellContent Route="MainPage" ContentTemplate="{DataTemplate local:MainPage}" />
         </Tab>
-        <Tab Title="Eksamener" Icon="icon_exam.png" Route="Eksamener">
-            <ShellContent ContentTemplate="{DataTemplate views:ExamView}" />
+
+        <Tab Title="Eksamener" Icon="icon_exam.png">
+            <ShellContent Route="Eksamener" ContentTemplate="{DataTemplate views:ExamView}" />
         </Tab>
-        <Tab Title="Studerende" Icon="icon_student.png" Route="Studerende">
-            <ShellContent ContentTemplate="{DataTemplate views:StudentView}" />
+
+        <Tab Title="Studerende" Icon="icon_student.png">
+            <ShellContent Route="Studerende" ContentTemplate="{DataTemplate views:StudentView}" />
         </Tab>
+
+        <Tab Title="Eksamenssession" Icon="icon_session.png">
+            <ShellContent Route="ExamSessionView" ContentTemplate="{DataTemplate views:ExamSessionView}" />
+        </Tab>
+        
         <Tab Title="Historik" Icon="icon_history.png">
-            <ShellContent ContentTemplate="{DataTemplate views:HistoryView}" Route="HistoryView"/>
+            <ShellContent Route="HistoryView" ContentTemplate="{DataTemplate views:HistoryView}" />
         </Tab>
+
     </TabBar>
-    <ShellContent Route="ExamSessionView" ContentTemplate="{DataTemplate views:ExamSessionView}"/>
 </Shell>

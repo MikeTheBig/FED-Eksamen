@@ -6,6 +6,11 @@
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="15">
 
+            <Label Text="Vælg Eksamen:" FontAttributes="Bold"/>
+            <Picker ItemsSource="{Binding Exams}"
+                    ItemDisplayBinding="{Binding CourseName}"
+                    SelectedItem="{Binding SelectedExam}" />
+
             <Label Text="Studerende til eksamen" FontSize="24" HorizontalOptions="Center"/>
 
             <CollectionView ItemsSource="{Binding Students}" HeightRequest="200">

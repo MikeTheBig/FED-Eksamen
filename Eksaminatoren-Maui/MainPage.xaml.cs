@@ -6,11 +6,5 @@
 		{
 			InitializeComponent();
 		}
-		private async void OnGoToExamsClicked(object sender, EventArgs e)
-		{
-			await Shell.Current.GoToAsync("//Eksamener"); // Skal matche route
-
-			// defineret i AppShell.xaml
-    }
     }
 }

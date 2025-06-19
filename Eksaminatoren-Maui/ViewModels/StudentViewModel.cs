@@ -5,58 +5,97 @@ using Eksaminatoren_Maui.Models;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
-namespace Eksaminatoren_Maui.ViewModels
+namespace Eksaminatoren_Maui.ViewModels;
+
+
+public partial class StudentViewModel : ObservableObject
 {
-    public partial class StudentViewModel : ObservableObject
+    private readonly DatabaseService _database;
+
+    [ObservableProperty]
+    private ObservableCollection<Student> students = new();
+
+    [ObservableProperty]
+    private ObservableCollection<Exam> exams = new();
+
+    [ObservableProperty]
+    private Exam selectedExam;
+
+    [ObservableProperty]
+    private string studentNumber;
+
+    [ObservableProperty]
+    private string name;
+
+    public StudentViewModel(DatabaseService database)
     {
-        private readonly DatabaseService _database;
+        _database = database;
+    }
 
-        [ObservableProperty]
-        private ObservableCollection<Student> students = new();
-
-        [ObservableProperty]
-        private string studentNumber;
-
-        [ObservableProperty]
-        private string name;
-
-        public StudentViewModel(DatabaseService database)
+    [RelayCommand]
+    public async Task LoadStudentsAsync()
+    {
+        if (SelectedExam == null)
         {
-            _database = database;
-        }
-
-        [RelayCommand]
-        public async Task LoadStudentsAsync()
-        {
-            var studentsFromDb = await _database.GetStudentsByExamAsync(1); // <-- evt. dynamisk examId senere
+            // Hvis ingen eksamen valgt, kan man f.eks. hente alle studerende eller ingen
             Students.Clear();
-            foreach (var student in studentsFromDb)
-            {
-                Students.Add(student);
-            }
+            return;
         }
 
-        [RelayCommand]
-        public async Task AddStudentAsync()
+        var studentsFromDb = await _database.GetStudentsByExamAsync(SelectedExam.Id);
+        Students.Clear();
+        foreach (var student in studentsFromDb)
+            Students.Add(student);
+    }
+
+    [RelayCommand]
+    public async Task LoadExamsAsync()
+    {
+        var examsFromDb = await _database.GetExamsAsync();
+        Exams.Clear();
+        foreach (var exam in examsFromDb)
+            Exams.Add(exam);
+
+        // Sæt automatisk valgt eksamen til den første, hvis muligt
+        if (Exams.Count > 0)
         {
-            if (string.IsNullOrWhiteSpace(Name) || string.IsNullOrWhiteSpace(StudentNumber))
-                return;
-
-            var newStudent = new Student
-            {
-                Name = Name,
-                StudentNumber = StudentNumber,
-                ExamId = 1, // <-- Gør dynamisk senere!
-                Order = Students.Count + 1
-            };
-
-            var result = await _database.AddStudentAsync(newStudent);
-            if (result > 0)
-            {
-                Students.Add(newStudent);
-                Name = string.Empty;
-                StudentNumber = string.Empty;
-            }
+            SelectedExam = Exams[0];
+            await LoadStudentsAsync();
         }
+    }
+
+    [RelayCommand]
+    public async Task AddStudentAsync()
+    {
+        if (SelectedExam == null)
+        {
+            await Application.Current.MainPage.DisplayAlert("Fejl", "Vælg en eksamen først.", "OK");
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(Name) || string.IsNullOrWhiteSpace(StudentNumber))
+            return;
+
+        var newStudent = new Student
+        {
+            Name = Name,
+            StudentNumber = StudentNumber,
+            ExamId = SelectedExam.Id,
+            Order = Students.Count + 1
+        };
+
+        var result = await _database.AddStudentAsync(newStudent);
+        if (result > 0)
+        {
+            Students.Add(newStudent);
+            Name = string.Empty;
+            StudentNumber = string.Empty;
+        }
+    }
+
+    partial void OnSelectedExamChanged(Exam value)
+    {
+        // Når valgt eksamen ændres, load studerende for den eksamen
+        _ = LoadStudentsAsync();
     }
 }

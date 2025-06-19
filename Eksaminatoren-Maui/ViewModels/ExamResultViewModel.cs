@@ -2,9 +2,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Eksaminatoren_Maui.Models; 
 using Eksaminatoren_Maui.Data;
-using System;
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 
 namespace Eksaminatoren_Maui.ViewModels;
 

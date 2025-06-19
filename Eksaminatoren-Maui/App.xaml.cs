@@ -10,7 +10,6 @@ public partial class App : Application
     {
         InitializeComponent();
         _databaseService = databaseService;
-        Task.Run(async () => await _databaseService.SeedTestDataAsync()).Wait();
         MainPage = new AppShell();
     }
 }

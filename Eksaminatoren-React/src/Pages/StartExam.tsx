@@ -1,29 +1,30 @@
 import { useEffect, useState, useRef } from "react";
 import InputField from "../Component/InputField";
 import Button from "../Component/Button";
-import { fetchExams, fetchStudentsByExam, updateStudent } from "../api";
+import { fetchExams, fetchStudentsByExam, updateStudent, Exam, Student } from "../api";
+
 
 export default function StartExam() {
-  const [exams, setExams] = useState([]);
-  const [selectedExamId, setSelectedExamId] = useState("");
-  const [students, setStudents] = useState([]);
-  const [currentStudentIndex, setCurrentStudentIndex] = useState(0);
-  const [examStarted, setExamStarted] = useState(false);
-  const [randomQuestion, setRandomQuestion] = useState(null);
-  const [timeLeft, setTimeLeft] = useState(0);
-  const [timerRunning, setTimerRunning] = useState(false);
-  const [notes, setNotes] = useState("");
-  const [grade, setGrade] = useState("");
-  const [actualExamTime, setActualExamTime] = useState(0);
-  const timerRef = useRef(null);
+  const [exams, setExams] = useState<Exam[]>([]);
+  const [selectedExamId, setSelectedExamId] = useState<string>("");
+  const [students, setStudents] = useState<Student[]>([]);
+  const [currentStudentIndex, setCurrentStudentIndex] = useState<number>(0);
+  const [examStarted, setExamStarted] = useState<boolean>(false);
+  const [randomQuestion, setRandomQuestion] = useState<number | null>(null);
+  const [timeLeft, setTimeLeft] = useState<number>(0);
+  const [timerRunning, setTimerRunning] = useState<boolean>(false);
+  const [notes, setNotes] = useState<string>("");
+  const [grade, setGrade] = useState<string>("");
+  const [actualExamTime, setActualExamTime] = useState<number>(0);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
     fetchExams()
-      .then((data) => {
+      .then((data: Exam[]) => {
         setExams(data);
-        if (data.length > 0) setSelectedExamId(data[0].id);
+        if (data.length > 0) setSelectedExamId(String(data[0].id));
       })
-      .catch((err) => alert("Fejl ved hentning af eksamener: " + err.message));
+      .catch((err: any) => alert("Fejl ved hentning af eksamener: " + (err?.message ?? String(err))));
   }, []);
 
   useEffect(() => {
@@ -47,18 +48,20 @@ export default function StartExam() {
       return;
     }
     fetchStudentsByExam(selectedExamId)
-      .then((data) => {
+      .then((data: Student[]) => {
         setStudents(data);
         setCurrentStudentIndex(0);
       })
-      .catch((err) => alert("Fejl ved hentning af studerende: " + err.message));
+      .catch((err: any) => alert("Fejl ved hentning af studerende: " + (err?.message ?? String(err))));
   }, [selectedExamId]);
 
   function handleDrawQuestion() {
     const exam = exams.find((e) => e.id === selectedExamId);
     if (!exam) return;
-    const max = Number(exam.questionCount);
-    if (isNaN(max) || max <= 0) {
+    // questionCount may be a number or a string (or undefined). Coerce safely.
+    const max = exam.questionCount;
+
+    if (max <= 0) {
       alert("Antal spørgsmål er ikke korrekt sat for denne eksamen!");
       return;
     }
@@ -69,7 +72,7 @@ export default function StartExam() {
   function handleStartExamination() {
     const exam = exams.find((e) => e.id === selectedExamId);
     if (!exam) return;
-    setTimeLeft(exam.examDurationMinutes * 60);
+    setTimeLeft(Number(exam.examDurationMinutes) * 60);
     setActualExamTime(0);
     setTimerRunning(true);
     setExamStarted(true);
@@ -77,7 +80,7 @@ export default function StartExam() {
     timerRef.current = setInterval(() => {
       setTimeLeft((prev) => {
         if (prev <= 1) {
-          clearInterval(timerRef.current);
+          if (timerRef.current) clearInterval(timerRef.current as any);
           timerRef.current = null;
           setTimerRunning(false);
           alert("Tiden er gået!");
@@ -114,10 +117,10 @@ export default function StartExam() {
     };
 
     try {
-      await updateStudent(currentStudent.id, updatedData);
+      await updateStudent(currentStudent.id, updatedData as Partial<Student>);
       alert("Data gemt!");
-    } catch (error) {
-      alert("Fejl ved gemning: " + error.message);
+    } catch (error: any) {
+      alert("Fejl ved gemning: " + (error?.message ?? String(error)));
     }
 
     setRandomQuestion(null);
@@ -135,9 +138,9 @@ export default function StartExam() {
     }
   }
 
-  const currentStudent = students[currentStudentIndex] || null;
+  const currentStudent: Student | null = students[currentStudentIndex] || null;
 
-  function formatTime(seconds) {
+  function formatTime(seconds: number) {
     const m = Math.floor(seconds / 60)
       .toString()
       .padStart(2, "0");
@@ -153,13 +156,13 @@ export default function StartExam() {
         label="Vælg Eksamen"
         type="select"
         value={selectedExamId}
-        onChange={(e) => {
+        onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
           setSelectedExamId(e.target.value);
           setExamStarted(false);
           setCurrentStudentIndex(0);
         }}
         options={exams.map((exam) => ({
-          value: exam.id,
+          value: String(exam.id),
           label: `${exam.term} - ${exam.course} (${exam.date})`,
         }))}
         placeholder="Vælg eksamen"
@@ -188,9 +191,9 @@ export default function StartExam() {
           )}
 
           {!timerRunning && (
-            <Button onClick={handleStartExamination} disabled={!randomQuestion} className="bg-green-600">
+            <Button onClick={handleStartExamination} disabled={!randomQuestion}>
               Start eksamination
-            </Button>
+              </Button>
           )}
 
           {timerRunning && (
@@ -201,7 +204,7 @@ export default function StartExam() {
             label="Noter"
             type="textarea"
             value={notes}
-            onChange={(e) => setNotes(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => setNotes(e.target.value)}
             placeholder="Skriv noter her..."
             disabled={!timerRunning && !examStarted}
           />
@@ -210,7 +213,7 @@ export default function StartExam() {
             label="Karakter"
             type="select"
             value={grade}
-            onChange={(e) => setGrade(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setGrade(e.target.value)}
             disabled={!examStarted || timerRunning}
             options={[
               { value: "", label: "Vælg karakter" },
@@ -225,12 +228,12 @@ export default function StartExam() {
           />
 
           {timerRunning && (
-            <Button onClick={handleStopExamination} className="bg-yellow-500">
+            <Button onClick={handleStopExamination}>
               Stop timer
             </Button>
           )}
 
-          <Button onClick={handleEndExamination} disabled={!grade} className="bg-purple-600">
+          <Button onClick={handleEndExamination} disabled={!grade}>
             Slut eksamination og næste studerende
           </Button>
         </>

@@ -1,18 +1,20 @@
 import { useEffect, useState } from "react";
-import { fetchExams, createStudent } from "../api";
+import { fetchExams, createStudent, Exam } from "../api";
 import Button from "../Component/Button";
 
 export default function AddStudent() {
-  const [exams, setExams] = useState([]);
-  const [selectedExamId, setSelectedExamId] = useState("");
-  const [studentNumber, setStudentNumber] = useState("");
-  const [studentName, setStudentName] = useState("");
+  const [exams, setExams] = useState<Exam[]>([]);
+  const [selectedExamId, setSelectedExamId] = useState<string>("");
+  const [studentNumber, setStudentNumber] = useState<string>("");
+  const [studentName, setStudentName] = useState<string>("");
 
   useEffect(() => {
-    fetchExams().then((data) => {
-      setExams(data);
-      if (data.length > 0) setSelectedExamId(data[0].id);
-    });
+    fetchExams()
+      .then((data) => {
+        setExams(data);
+        if (data.length > 0) setSelectedExamId(String(data[0].id));
+      })
+      .catch((err: any) => console.error(err));
   }, []);
 
   const addStudent = async () => {

@@ -1,3 +1,18 @@
+import React from "react";
+
+type Option = { value: string; label: string };
+
+interface Props {
+  label: string;
+  type?: string;
+  value?: any;
+  onChange?: (e: any) => void;
+  placeholder?: string;
+  min?: number | string;
+  options?: Option[];
+  disabled?: boolean;
+}
+
 export default function InputField({
   label,
   type = "text",
@@ -6,8 +21,8 @@ export default function InputField({
   placeholder,
   min,
   options,
-  disabled
-}) {
+  disabled,
+}: Props) {
   return (
     <label className="block mb-4">
       <span className="block text-sm font-medium text-gray-700">{label}</span>

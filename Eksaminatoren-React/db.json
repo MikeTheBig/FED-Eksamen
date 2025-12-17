@@ -51,7 +51,11 @@
       "id": "1",
       "examId": 1,
       "studentNumber": "123456",
-      "name": "Morten Hansen"
+      "name": "Morten Hansen",
+      "question": 7,
+      "actualExamTime": 11,
+      "notes": "fint, yes",
+      "grade": "7"
     },
     {
       "id": "c06b",
@@ -67,7 +71,11 @@
       "id": "5924",
       "examId": 1,
       "studentNumber": "423443",
-      "name": "Jens"
+      "name": "Jens",
+      "question": 1,
+      "actualExamTime": 1,
+      "notes": "fefew",
+      "grade": "10"
     },
     {
       "id": "a40d",

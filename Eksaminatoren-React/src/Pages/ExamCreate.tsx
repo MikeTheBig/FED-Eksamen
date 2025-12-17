@@ -1,9 +1,9 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import InputField from "../Component/InputField";
 import Button from "../Component/Button";
-import { createExam as createExamAPI } from "../api";
+import { createExam as createExamAPI, Exam } from "../api";
 
-export default function ExamCreate({ onCreated }) {
+export default function ExamCreate({ onCreated }: { onCreated?: (exam: Exam) => void }) {
   const [term, setTerm] = useState("");
   const [course, setCourse] = useState("");
   const [date, setDate] = useState("");
@@ -73,14 +73,14 @@ export default function ExamCreate({ onCreated }) {
         type="number"
         min="1"
         value={questionCount}
-        onChange={(e) => setQuestionCount(e.target.value)}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuestionCount(Number(e.target.value))}
       />
       <InputField
         label="Eksaminationstid (minutter)"
         type="number"
         min="1"
         value={examDuration}
-        onChange={(e) => setExamDuration(e.target.value)}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setExamDuration(Number(e.target.value))}
       />
       <InputField
         label="Starttidspunkt"

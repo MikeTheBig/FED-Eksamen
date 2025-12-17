@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { fetchExams, fetchStudentsByExam } from "../api";
+import { fetchExams, fetchStudentsByExam, Exam, Student } from "../api";
 
 export default function HistoryPage() {
-  const [exams, setExams] = useState([]);
-  const [selectedExamId, setSelectedExamId] = useState("");
-  const [students, setStudents] = useState([]);
+  const [exams, setExams] = useState<Exam[]>([]);
+  const [selectedExamId, setSelectedExamId] = useState<string>("");
+  const [students, setStudents] = useState<Student[]>([]);
 
   useEffect(() => {
     fetchExams()
@@ -19,16 +19,16 @@ export default function HistoryPage() {
     }
 
     fetchStudentsByExam(selectedExamId)
-      .then(setStudents)
-      .catch(err => alert("Fejl ved hentning af studerende: " + err.message));
+      .then((data) => setStudents(data))
+      .catch((err: any) => alert("Fejl ved hentning af studerende: " + (err?.message ?? String(err))));
   }, [selectedExamId]);
 
-  function calculateAverageGrade(students) {
-    if (students.length === 0) return 0;
-    const grades = students
-      .map(s => Number(s.grade))
-      .filter(g => !isNaN(g));
-    if (grades.length === 0) return 0;
+  function calculateAverageGrade(studentsList: Student[]) {
+    if (studentsList.length === 0) return "0";
+    const grades = studentsList
+      .map((s) => Number(s.grade))
+      .filter((g) => !isNaN(g));
+    if (grades.length === 0) return "0";
     const sum = grades.reduce((acc, curr) => acc + curr, 0);
     return (sum / grades.length).toFixed(2);
   }
